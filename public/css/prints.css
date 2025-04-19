@@ -1,0 +1,68 @@
+
+   @page {
+            header: page-header;
+            footer: page-footer;
+        }
+        body,html {
+            vertical-align: middle;
+            font-size: 14px;
+            letter-spacing: normal;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding-top: 5px;
+        }
+        .table {
+            width: 100%;
+            margin: auto;
+            border: 1px solid black;
+            border-collapse: collapse;
+            font-size: 10px;
+            vertical-align: middle;
+        }
+
+        .tr {
+            /*height: 50px;*/
+            border: 1px solid black;
+            vertical-align: middle;
+        }
+        .td {
+            /*height: 50px;*/
+            vertical-align: middle;
+            border: 1px solid black;
+            text-align: center;
+            padding: 5px;
+            font-size: 12px;
+        }
+        .right {
+            float: right;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .left {
+            float: left;
+            direction: ltr;
+            text-align: left;
+            padding-left: 0;
+            margin-left: 0;
+        }
+        .center{
+            margin: auto;
+            text-align: center;
+        }
+        .paragraph{
+            margin-top: -15px !important;
+            font-weight: lighter;
+        }
+
+        .printed_by{
+            font-size: 10px;
+            color:gray;
+        }
+
+
+     
