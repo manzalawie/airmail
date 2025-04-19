@@ -69,9 +69,18 @@ class RolesAndPermissionsSeeder extends Seeder
             Permission::create(['name' => $permission]);
         }
 
-        // Supervisor role gets all permissions
-        $supervisorRole = Role::create(['name' => 'supervisor'])
+        // Create superadmin role with ALL permissions
+        $superadminRole = Role::create(['name' => 'superadmin'])
             ->givePermissionTo(Permission::all());
+
+        // Supervisor role gets all permissions except user management
+        $supervisorRole = Role::create(['name' => 'supervisor'])
+            ->givePermissionTo(Permission::whereNotIn('name', [
+                'view-users',
+                // 'create-users',
+                // 'edit-users',
+                'delete-users',
+            ])->get());
 
         // Create basic roles
         $hscodeRole = Role::create(['name' => 'hscode'])
@@ -154,12 +163,8 @@ class RolesAndPermissionsSeeder extends Seeder
             ]);
 
         // Create test users for each role
-        $this->createUserWithRole('hscode@airmail.com', 'hscode');
-        $this->createUserWithRole('inbound@airmail.com', 'inbound');
-        $this->createUserWithRole('store@airmail.com', 'store');
-        $this->createUserWithRole('vns@airmail.com', 'vns');
-        $this->createUserWithRole('tables@airmail.com', 'tables');
-        $this->createUserWithRole('employeeaffairs@airmail.com', 'employeeaffairs');
+        $this->createUserWithRole('supervisor@airmail.com', 'supervisor');
+        $this->createUserWithRole('superadmin@airmail.com', 'superadmin');
         
         $this->createUserWithRole('hscodemanager@airmail.com', 'hscodemanager');
         $this->createUserWithRole('inboundmanager@airmail.com', 'inboundmanager');
@@ -168,7 +173,12 @@ class RolesAndPermissionsSeeder extends Seeder
         $this->createUserWithRole('tablesmanager@airmail.com', 'tablesmanager');
         $this->createUserWithRole('employeeaffairsmanager@airmail.com', 'employeeaffairsmanager');
         
-        $this->createUserWithRole('supervisor@airmail.com', 'supervisor');
+        $this->createUserWithRole('hscode@airmail.com', 'hscode');
+        $this->createUserWithRole('inbound@airmail.com', 'inbound');
+        $this->createUserWithRole('store@airmail.com', 'store');
+        $this->createUserWithRole('vns@airmail.com', 'vns');
+        $this->createUserWithRole('tables@airmail.com', 'tables');
+        $this->createUserWithRole('employeeaffairs@airmail.com', 'employeeaffairs');
     }
 
     protected function createUserWithRole($email, $roleName)

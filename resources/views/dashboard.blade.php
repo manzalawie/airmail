@@ -21,17 +21,28 @@
 
     <!-- Quick Stats -->
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
-        @foreach(['hscode', 'inbound', 'store', 'vns', 'tables', 'employeeaffairs'] as $module)
+        @php
+            $modules = [
+                'hscode' => 'HS Code',
+                'inbound' => 'Inbound',
+                'store' => 'Store',
+                'vns' => 'VNS',
+                'tables' => 'Tables',
+                'employeeaffairs' => 'Employee Affairs',
+            ];
+        @endphp
+
+        @foreach($modules as $module => $displayName)
             @can('view-'.$module)
                 <div class="col-md-4 mt-2">
                     <div class="card h-100 shadow-sm">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h5 class="card-title">{{ ucfirst($module) }}</h5>
-                                    <p class="card-text text-muted">Manage {{ $module }} records</p>
+                                    <h5 class="card-title">{{ $displayName }}</h5>
+                                    <p class="card-text text-muted">Manage {{ strtolower($displayName) }} records</p>
                                 </div>
-                                <i class="bi bi-{{ $module === 'hscode' ? 'file-earmark-text' : 'box' }} fs-1 text-primary"></i>
+                                <i class="bi bi-{{ $module === 'hscode' ? 'file-earmark-text' : ($module === 'employeeaffairs' ? 'people' : 'box') }} fs-1 text-primary"></i>
                             </div>
                             <a href="{{ route($module.'.index') }}" class="btn btn-outline-primary mt-3">Go to Module</a>
                         </div>
@@ -39,6 +50,7 @@
                 </div>
             @endcan
         @endforeach
+
     </div>
 
     <!-- Recent Activity -->

@@ -26,6 +26,7 @@ class AddDisplayNameToRolesTable extends Migration
     protected function seedDisplayNames()
     {
         $roles = [
+            'superadmin' => 'Super Admin',
             'supervisor' => 'Supervisor',
             'hscode' => 'HS Code Specialist',
             'hscodemanager' => 'HS Code Manager',
@@ -38,6 +39,7 @@ class AddDisplayNameToRolesTable extends Migration
             'tables' => 'Tables Specialist',
             'tablesmanager' => 'Tables Manager',
             'employeeaffairs' => 'Employee Affairs',
+            'employeeaffairsmanager' => 'Employee Affairs Manager',
         ];
 
         foreach ($roles as $name => $display) {

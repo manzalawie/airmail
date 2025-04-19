@@ -16,16 +16,29 @@
                 </a>
             </li>
             
-            @foreach(['hscode', 'inbound', 'store', 'vns', 'tables', 'employeeaffairs'] as $module)
+            @php
+                $modules = [
+                    'hscode' => 'HS Code',
+                    'inbound' => 'Inbound',
+                    'store' => 'Store',
+                    'vns' => 'VNS',
+                    'tables' => 'Tables',
+                    'employeeaffairs' => 'Employee Affairs',
+                    'users' => 'Users',
+                ];
+            @endphp
+            
+            @foreach($modules as $module => $displayName)
                 @can('view-'.$module)
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{ route($module.'.index') }}">
                             <i class="bi bi-{{ $module === 'hscode' ? 'file-earmark-text' : ($module === 'employeeaffairs' ? 'people' : 'box') }} me-2"></i>
-                            {{ ucfirst($module) }}
+                            {{ $displayName }}
                         </a>
                     </li>
                 @endcan
             @endforeach
+        
         </ul>
     </div>
 </div>
