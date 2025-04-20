@@ -36,6 +36,17 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="national_id">National ID <span class="text-danger">*</span></label>
+                            <input type="national_id" class="form-control @error('national_id') is-invalid @enderror" 
+                                   id="national_id" name="national_id" value="{{ old('national_id') }}" required>
+                            @error('national_id')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="username">Username <span class="text-danger">*</span></label>
                             <input type="username" class="form-control @error('username') is-invalid @enderror" 
                                    id="username" name="username" value="{{ old('username') }}" required>
@@ -97,7 +108,7 @@
                         <div class="form-group">
                             <label for="address">Address</label>
                             <input class="form-control @error('address') is-invalid @enderror" 
-                                      id="address" name="address" rows="2">{{ old('address') }}
+                                      id="address" name="address" rows="2" value="{{ old('address') }}">
                             @error('address')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
