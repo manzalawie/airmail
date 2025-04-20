@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\{
     HscodeController,
     InboundController,
@@ -8,7 +9,8 @@ use App\Http\Controllers\{
     VnsController,
     TablesController,
     EmployeeAffairsController,
-    DashboardController
+    DashboardController,
+    UserController
 };
 
 /*
@@ -91,18 +93,23 @@ Route::prefix('employeeaffairs')->middleware('auth:sanctum')->group(function () 
     Route::post('/{id}/approve', [EmployeeAffairsController::class, 'approve'])->name('employeeaffairs.approve')->middleware('permission:approve-employeeaffairs');
 });
 
-// User Management (for supervisors only)
-Route::prefix('users')->middleware(['auth:sanctum', 'role:supervisor'])->group(function () {
-    Route::get('/', [UserController::class, 'index'])->name('users.index');
-    Route::get('/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/', [UserController::class, 'store'])->name('users.store');
-    Route::get('/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-    Route::post('/{id}/assign-role', [UserController::class, 'assignRole'])->name('users.assign-role');
-});
-
-
+// User Management (for superadmins only)Route::prefix('users')->middleware(['auth:sanctum'])->group(function () {
+    Route::prefix('users')->middleware(['auth:sanctum'])->group(function () {
+        // Accessible to superadmin or anyone with view-users permission
+        Route::get('/', [UserController::class, 'index'])
+            ->name('users.index')
+            ->middleware(['role:superadmin|supervisor', 'permission:view-users']);
+        
+        // All other routes remain superadmin-only
+        Route::middleware(['role:superadmin'])->group(function () {
+            Route::get('/create', [UserController::class, 'create'])->name('users.create');
+            Route::post('/', [UserController::class, 'store'])->name('users.store');
+            Route::get('/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+            Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
+            Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+            Route::post('/{id}/assign-role', [UserController::class, 'assignRole'])->name('users.assign-role');
+        });
+    });
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

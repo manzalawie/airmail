@@ -79,7 +79,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 'view-users',
                 // 'create-users',
                 // 'edit-users',
-                'delete-users',
+                // 'delete-users',
             ])->get());
 
         // Create basic roles
@@ -163,8 +163,8 @@ class RolesAndPermissionsSeeder extends Seeder
             ]);
 
         // Create test users for each role
-        $this->createUserWithRole('supervisor@airmail.com', 'supervisor');
         $this->createUserWithRole('superadmin@airmail.com', 'superadmin');
+        $this->createUserWithRole('supervisor@airmail.com', 'supervisor');
         
         $this->createUserWithRole('hscodemanager@airmail.com', 'hscodemanager');
         $this->createUserWithRole('inboundmanager@airmail.com', 'inboundmanager');
