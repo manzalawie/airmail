@@ -108,6 +108,7 @@ Route::prefix('employeeaffairs')->middleware('auth:sanctum')->group(function () 
             Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
             Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
             Route::post('/{id}/assign-role', [UserController::class, 'assignRole'])->name('users.assign-role');
+            Route::patch('/users/{user}/restore', [UserController::class, 'restore'])->name('users.restore')->middleware('can:delete-users');
         });
     });
 Auth::routes();

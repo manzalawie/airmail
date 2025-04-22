@@ -13,7 +13,7 @@ class UserController extends Controller
     public function index(){
 
         $user = Auth::user();
-        $users = User::paginate(10);
+        $users = User::withTrashed()->paginate(10);
         $role = $user->getRoleNames()->first() ?? 'User';
         $roles = Role::all();
         
@@ -42,7 +42,6 @@ class UserController extends Controller
 
     public function edit($id)
     {
-
         $user = User::findOrFail($id);
         $roles = Role::all();
         $permissions = Permission::all();
@@ -57,5 +56,32 @@ class UserController extends Controller
         $userRole = $user->roles->pluck('name')->first();
         
         return view('pages.users.edit', compact('user', 'roles', 'permissions', 'userPermissions', 'userRole'));
+    }
+
+    public function update(Request $request)
+    {
+        dd($request);
+    }
+
+    public function destroy($id)
+    {
+        $userToDelete = User::findOrFail($id);
+        
+        $userToDelete->deleted_by = Auth::id();
+        $userToDelete->save();
+        
+        $userToDelete->delete();
+        
+        return redirect()->back()->with('success', 'User has been deleted successfully');
+    }
+    
+    public function restore($id)
+    {
+        $user = User::withTrashed()->findOrFail($id);
+        $user->restored_by = Auth::id();
+        $user->restore();
+        
+        return redirect()->route('users.index')
+            ->with('success', 'User has been restored successfully');
     }
 }

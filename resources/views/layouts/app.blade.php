@@ -78,6 +78,11 @@
     </main>
     @yield('content-nonAuthorized')
 
+    <footer class="main-content">
+        <div class="container text-center">
+            <span class="text-muted">&copy; {{ date('Y') }} Manzalawie. All rights reserved.</span>
+        </div>
+    </footer>
 
     <!-- Bootstrap JS -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>

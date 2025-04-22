@@ -95,15 +95,18 @@
                     </thead>
                     <tbody>
                         @forelse($users as $user)
-                        <tr>
+                        <tr class="@if($user->trashed()) bg-light-danger @endif">
                             <td>{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" 
+                                    <div class="rounded-circle bg-{{ $user->trashed() ? 'secondary' : 'primary' }} text-white d-flex align-items-center justify-content-center" 
                                          style="width: 36px; height: 36px; margin-right: 10px;">
                                         {{ strtoupper(substr($user->name, 0, 1)) }}
                                     </div>
                                     {{ $user->name }}
+                                    @if($user->trashed())
+                                    <span class="badge badge-danger ml-2">Deleted</span>
+                                    @endif
                                 </div>
                             </td>
                             <td>{{ $user->email }}</td>
@@ -120,19 +123,33 @@
                                         <i class="fas fa-eye"></i>
                                     </a>
                                     @endcan
-                                    @can('edit-users')
-                                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning mr-1" title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    @endcan
+                                    
+                                    @if(!$user->trashed())
+                                        @can('edit-users')
+                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning mr-1" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        @endcan
+                                    @endif
+                                    
                                     @can('delete-users')
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger mr-1" title="Delete" onclick="return confirm('Are you sure you want to delete this user?')">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
+                                        @if($user->trashed())
+                                            <form action="{{ route('users.restore', $user->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-success mr-1" title="Restore" onclick="return confirm('Restore this user?')">
+                                                    <i class="fas fa-trash-restore"></i>
+                                                </button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger mr-1" title="Delete" onclick="return confirm('Are you sure you want to delete this user?')">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        @endif
                                     @endcan
                                 </div>
                             </td>

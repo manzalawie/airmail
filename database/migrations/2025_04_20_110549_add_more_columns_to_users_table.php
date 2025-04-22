@@ -19,6 +19,11 @@ class AddMoreColumnsToUsersTable extends Migration
             $table->string('username')->after('phone')->nullable();
             $table->string('national_id')->after('username')->nullable();
             $table->string('address')->after('email')->nullable();
+            $table->softDeletes();
+            $table->unsignedBigInteger('deleted_by')->nullable();
+            $table->foreign('deleted_by')->references('id')->on('users');
+            $table->unsignedBigInteger('restored_by')->nullable();
+            $table->foreign('restored_by')->references('id')->on('users');
         });
     }
 
