@@ -6,14 +6,52 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Permission;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Services\ArabicPdfExportService;
+use Elibyy\TCPDF\Facades\TCPDF;
+
 use Auth;
 
 class UserController extends Controller
 {
-    public function index(){
 
+    public function index(Request $request)
+    {
         $user = Auth::user();
-        $users = User::withTrashed()->paginate(10);
+        $users = User::withTrashed();
+        
+        // Search functionality
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $users->where(function($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+        
+        // Role filter
+        if ($request->has('role') && $request->input('role') != 'all') {
+            $role = $request->input('role');
+            $users->whereHas('roles', function($query) use ($role) {
+                $query->where('name', $role);
+            });
+        }
+
+        if ($request->has('export')) {
+            $usersQuery = $users->get();
+            
+            if ($request->export == 'pdf') {
+                $pdfService = new ArabicPdfExportService();
+                return $pdfService->exportUsers($usersQuery);
+            }
+            if ($request->export == 'excel') {
+                return Excel::download(new UsersExport($usersQuery), 'users-list.xlsx');
+            }
+        }
+        
+        $users = $users->paginate(10);
         $role = $user->getRoleNames()->first() ?? 'User';
         $roles = Role::all();
         
@@ -21,6 +59,10 @@ class UserController extends Controller
             'roleName' => ucfirst($role),
             'users' => $users,
             'roles' => $roles,
+            'filters' => [
+                'search' => $request->input('search', ''),
+                'role' => $request->input('role', 'all')
+            ]
         ]);
     }
 

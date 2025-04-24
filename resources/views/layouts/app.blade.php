@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', config('app.name'))</title>
-    
+    <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
     <!-- Fontawesome CSS -->
     <link href="{{ asset('css/fontawesome.min.css') }}" rel="stylesheet">
     <!-- Bootstrap CSS -->
@@ -29,6 +29,24 @@
             width: 100%;
             top: 0;
             z-index: 1000;
+        }
+
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            animation: slideIn 0.5s forwards, fadeOut 0.5s 3s forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; }
         }
         
         .sidebar {
@@ -72,17 +90,38 @@
     @include('includes.navbar')
     
     @include('includes.sidebar')
+
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     
+    @hasSection('content')
     <main class="main-content">
         @yield('content')
     </main>
-    @yield('content-nonAuthorized')
 
     <footer class="main-content">
         <div class="container text-center">
             <span class="text-muted">&copy; {{ date('Y') }} Manzalawie. All rights reserved.</span>
         </div>
     </footer>
+    @else
+    @yield('content-nonAuthorized')
+@endif
 
     <!-- Bootstrap JS -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>

@@ -25,15 +25,18 @@
                         <i class="fas fa-file-export"></i> Export
                     </button>
                     <div class="dropdown-menu">
-                        <button class="dropdown-item export-option" type="button" data-type="csv">
-                            <i class="fas fa-file-csv mr-2"></i> CSV
-                        </button>
-                        <button class="dropdown-item export-option" type="button" data-type="excel">
-                            <i class="fas fa-file-excel mr-2"></i> Excel
-                        </button>
-                        <button class="dropdown-item export-option" type="button" data-type="pdf">
-                            <i class="fas fa-file-pdf mr-2"></i> PDF
-                        </button>
+                        <form id="exportForm" method="GET" action="{{ route('users.index') }}">
+                            <!-- Include current filters -->
+                            <input type="hidden" name="search" value="{{ $filters['search'] ?? '' }}">
+                            <input type="hidden" name="role" value="{{ $filters['role'] ?? 'all' }}">
+                            
+                            <button type="submit" name="export" value="excel" class="dropdown-item">
+                                <i class="fas fa-file-excel mr-2"></i> Excel
+                            </button>
+                            <button type="submit" name="export" value="pdf" class="dropdown-item">
+                                <i class="fas fa-file-pdf mr-2"></i> PDF
+                            </button>
+                        </form>
                     </div>
                 </div>
                 
@@ -196,7 +199,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label>Date Range</label>
                         <div class="form-row">
                             <div class="col">
@@ -206,7 +209,7 @@
                                 <input type="date" class="form-control" name="date_to" value="{{ request('date_to') }}" placeholder="To">
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

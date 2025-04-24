@@ -23,9 +23,11 @@ use App\Http\Controllers\{
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes();
+// Auth routs
+Auth::routes(['register' => false]);
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth:sanctum');
+Route::get('/home', [DashboardController::class, 'index'])->name('home')->middleware('auth:sanctum');
 
 // HS Code Module
 Route::prefix('hscode')->middleware('auth:sanctum')->group(function () {
@@ -111,6 +113,5 @@ Route::prefix('employeeaffairs')->middleware('auth:sanctum')->group(function () 
             Route::patch('/users/{user}/restore', [UserController::class, 'restore'])->name('users.restore')->middleware('can:delete-users');
         });
     });
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
