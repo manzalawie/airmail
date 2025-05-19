@@ -19,6 +19,7 @@
             @php
                 $modules = [
                     'hscode' => 'HS Code',
+                    'sorting' => 'Sorting',
                     'inbound' => 'Inbound',
                     'store' => 'Store',
                     'vns' => 'VNS',

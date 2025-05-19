@@ -100,9 +100,47 @@ class UserController extends Controller
         return view('pages.users.edit', compact('user', 'roles', 'permissions', 'userPermissions', 'userRole'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request , $id)
     {
-        dd($request);
+
+        $rules = [
+            'name' => 'required|string|max:255',
+            'national_id' => 'required|string|size:14|regex:/^[0-9]+$/',
+            'username' => 'required|string|max:255|unique:users,username,'.$id,
+            'name_ar' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:20|regex:/^[0-9]+$/',
+            'address' => 'nullable|string|max:500',
+            'password' => 'nullable|min:8|confirmed',
+            'role' => 'required|string|exists:roles,name',
+            'permissions' => 'nullable|array',
+            'permissions.*' => 'exists:permissions,name',
+        ];
+
+        $messages = [
+            'national_id.size' => 'The national ID must be exactly 14 digits.',
+            'national_id.regex' => 'The national ID must contain only numbers.',
+            'phone.regex' => 'The mobile phone must contain only numbers.',
+            'password.confirmed' => 'Password confirmation does not match.',
+        ];
+
+        $validatedData = $request->validate($rules, $messages);
+
+        $user = User::findOrFail($id);
+        $newRole = $request->role;
+        $selectedPermissions = $request->permissions ?? [];
+
+
+        $updateData = $request->only(['name', 'national_id', 'username', 'name_ar', 'phone', 'address']);
+
+        if ($request->filled('password')) {
+            $updateData['password'] = bcrypt($request->password);
+        }
+
+        $user->update($updateData);
+        
+        $this->syncRoleAndPermissions($user, $newRole, $selectedPermissions);
+        
+        return redirect()->back()->with('success', 'User updated successfully');
     }
 
     public function destroy($id)
@@ -125,5 +163,41 @@ class UserController extends Controller
         
         return redirect()->route('users.index')
             ->with('success', 'User has been restored successfully');
+    }
+
+    protected function syncRoleAndPermissions(User $user, string $newRole, array $selectedPermissions)
+    {
+        $currentRole = $user->role;
+        
+        $newRolePermissions = Role::where('name', $newRole)->first()
+                            ->permissions->pluck('name')->toArray();
+
+        $currentDirectPermissions = $user->getDirectPermissions()
+                                    ->pluck('name')
+                                    ->toArray();
+
+        $permissionsToRemove = array_diff($currentDirectPermissions, $selectedPermissions);
+
+        $finalPermissions = array_unique(array_merge(
+            $newRolePermissions,
+            $selectedPermissions
+        ));
+
+        if ($currentRole !== $newRole) {
+            $user->syncRoles([$newRole]);
+        }
+
+        if (!empty($permissionsToRemove)) {
+            $user->revokePermissionTo($permissionsToRemove);
+        }
+
+        $user->syncPermissions($finalPermissions);
+    }
+
+    public function getDirectPermissions()
+    {
+        return $this->permissions()->whereDoesntHave('roles', function($q) {
+            $q->where('name', $this->role);
+        })->get();
     }
 }

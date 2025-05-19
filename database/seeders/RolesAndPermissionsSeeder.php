@@ -22,6 +22,13 @@ class RolesAndPermissionsSeeder extends Seeder
             'edit-hscode',
             'delete-hscode',
             'approve-hscode',
+
+            // Sorting permissions
+            'view-sorting',
+            'create-sorting',
+            'edit-sorting',
+            'delete-sorting',
+            'approve-sorting',
             
             // Inbound permissions
             'view-inbound',
@@ -89,6 +96,12 @@ class RolesAndPermissionsSeeder extends Seeder
                 'create-hscode',
             ]);
 
+        $sortingRole = Role::create(['name' => 'sorting'])
+        ->givePermissionTo([
+            'view-sorting',
+            'create-sorting',
+        ]);
+
         $inboundRole = Role::create(['name' => 'inbound'])
             ->givePermissionTo([
                 'view-inbound',
@@ -126,6 +139,13 @@ class RolesAndPermissionsSeeder extends Seeder
                 'edit-hscode',
                 'approve-hscode',
             ]);
+
+        $hscodeManager = Role::create(['name' => 'sortingmanager'])
+        ->givePermissionTo([
+            'view-sorting',
+            'edit-sorting',
+            'approve-sorting',
+        ]);
 
         $inboundManager = Role::create(['name' => 'inboundmanager'])
             ->givePermissionTo([
@@ -167,6 +187,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $this->createUserWithRole('supervisor@airmail.com', 'supervisor');
         
         $this->createUserWithRole('hscodemanager@airmail.com', 'hscodemanager');
+        $this->createUserWithRole('sortingmanager@airmail.com', 'sortingmanager');
         $this->createUserWithRole('inboundmanager@airmail.com', 'inboundmanager');
         $this->createUserWithRole('storemanager@airmail.com', 'storemanager');
         $this->createUserWithRole('vnsmanager@airmail.com', 'vnsmanager');
@@ -174,6 +195,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $this->createUserWithRole('employeeaffairsmanager@airmail.com', 'employeeaffairsmanager');
         
         $this->createUserWithRole('hscode@airmail.com', 'hscode');
+        $this->createUserWithRole('sorting@airmail.com', 'sorting');
         $this->createUserWithRole('inbound@airmail.com', 'inbound');
         $this->createUserWithRole('store@airmail.com', 'store');
         $this->createUserWithRole('vns@airmail.com', 'vns');

@@ -40,6 +40,17 @@ Route::prefix('hscode')->middleware('auth:sanctum')->group(function () {
     Route::post('/{id}/approve', [HscodeController::class, 'approve'])->name('hscode.approve')->middleware('permission:approve-hscode');
 });
 
+// Sorting Module
+Route::prefix('sorting')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [SortingController::class, 'index'])->name('sorting.index')->middleware('permission:view-sorting');
+    Route::get('/create', [SortingController::class, 'create'])->name('sorting.create')->middleware('permission:create-sorting');
+    Route::post('/', [SortingController::class, 'store'])->name('sorting.store')->middleware('permission:create-sorting');
+    Route::get('/{id}/edit', [SortingController::class, 'edit'])->name('sorting.edit')->middleware('permission:edit-sorting');
+    Route::put('/{id}', [SortingController::class, 'update'])->name('sorting.update')->middleware('permission:edit-sorting');
+    Route::delete('/{id}', [SortingController::class, 'destroy'])->name('sorting.destroy')->middleware('permission:delete-sorting');
+    Route::post('/{id}/approve', [SortingController::class, 'approve'])->name('sorting.approve')->middleware('permission:approve-sorting');
+});
+
 // Inbound Module
 Route::prefix('inbound')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [InboundController::class, 'index'])->name('inbound.index')->middleware('permission:view-inbound');
@@ -95,23 +106,30 @@ Route::prefix('employeeaffairs')->middleware('auth:sanctum')->group(function () 
     Route::post('/{id}/approve', [EmployeeAffairsController::class, 'approve'])->name('employeeaffairs.approve')->middleware('permission:approve-employeeaffairs');
 });
 
-// User Management (for superadmins only)Route::prefix('users')->middleware(['auth:sanctum'])->group(function () {
+// Users Module 
     Route::prefix('users')->middleware(['auth:sanctum'])->group(function () {
-        // Accessible to superadmin or anyone with view-users permission
         Route::get('/', [UserController::class, 'index'])
             ->name('users.index')
-            ->middleware(['role:superadmin|supervisor', 'permission:view-users']);
+            ->middleware('permission:view-users');
         
-        // All other routes remain superadmin-only
-        Route::middleware(['role:superadmin'])->group(function () {
+        Route::middleware('permission:create-users')->group(function () {
             Route::get('/create', [UserController::class, 'create'])->name('users.create');
             Route::post('/', [UserController::class, 'store'])->name('users.store');
+        });
+
+        Route::middleware('permission:edit-users')->group(function () {
             Route::get('/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
             Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
-            Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-            Route::post('/{id}/assign-role', [UserController::class, 'assignRole'])->name('users.assign-role');
-            Route::patch('/users/{user}/restore', [UserController::class, 'restore'])->name('users.restore')->middleware('can:delete-users');
         });
+
+        Route::middleware('permission:delete-users')->group(function () {
+            Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+            Route::patch('/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
+        });
+
+        Route::post('/{id}/assign-role', [UserController::class, 'assignRole'])
+            ->name('users.assign-role')
+            ->middleware('permission:assign-roles');
     });
 
 

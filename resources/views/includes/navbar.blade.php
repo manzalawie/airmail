@@ -12,7 +12,6 @@
             <ul class="navbar-nav mr-auto">
                 <!-- Left navbar items -->
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ route('home') }}">Home</a>
                 </li>
             </ul>
 

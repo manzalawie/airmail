@@ -13,7 +13,7 @@ class ArabicPdfExportService
         // Set document information
         $pdf->SetCreator(config('app.name'));
         $pdf->SetAuthor(config('app.name'));
-        $pdf->SetTitle('قانون المستخدمين');
+        $pdf->SetTitle('قائمة المستخدمين');
         $pdf->SetSubject('بيانات المستخدمين');
 
         // Set margins (left, top, right)

@@ -24,11 +24,13 @@
         @php
             $modules = [
                 'hscode' => 'HS Code',
+                'sorting' => 'Sorting',
                 'inbound' => 'Inbound',
                 'store' => 'Store',
                 'vns' => 'VNS',
                 'tables' => 'Tables',
                 'employeeaffairs' => 'Employee Affairs',
+                'users' => 'Users',
             ];
         @endphp
 
