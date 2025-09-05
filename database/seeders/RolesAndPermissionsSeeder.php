@@ -17,11 +17,11 @@ class RolesAndPermissionsSeeder extends Seeder
         // Create permissions
         $permissions = [
             // HS Code permissions
-            'view-hscode',
-            'create-hscode',
-            'edit-hscode',
-            'delete-hscode',
-            'approve-hscode',
+            'view-hs-code',
+            'create-hs-code',
+            'edit-hs-code',
+            'delete-hs-code',
+            'approve-hs-code',
 
             // Sorting permissions
             'view-sorting',
@@ -57,13 +57,27 @@ class RolesAndPermissionsSeeder extends Seeder
             'edit-tables',
             'delete-tables',
             'approve-tables',
+
+            // Returned Items permissions
+            'view-returned-items',
+            'create-returned-items',
+            'edit-returned-items',
+            'delete-returned-items',
+            'approve-returned-items',
             
             // Employee Affairs permissions
-            'view-employeeaffairs',
-            'create-employeeaffairs',
-            'edit-employeeaffairs',
-            'delete-employeeaffairs',
-            'approve-employeeaffairs',
+            'view-employee-affairs',
+            'create-employee-affairs',
+            'edit-employee-affairs',
+            'delete-employee-affairs',
+            'approve-employee-affairs',
+            
+            // Management Statistics permissions
+            'view-management-statistics',
+            'create-management-statistics',
+            'edit-management-statistics',
+            'delete-management-statistics',
+            'approve-management-statistics',
             
             // User management
             'view-users',
@@ -77,7 +91,7 @@ class RolesAndPermissionsSeeder extends Seeder
         }
 
         // Create superadmin role with ALL permissions
-        $superadminRole = Role::create(['name' => 'superadmin'])
+        $superadminRole = Role::create(['name' => 'super-admin'])
             ->givePermissionTo(Permission::all());
 
         // Supervisor role gets all permissions except user management
@@ -90,17 +104,17 @@ class RolesAndPermissionsSeeder extends Seeder
             ])->get());
 
         // Create basic roles
-        $hscodeRole = Role::create(['name' => 'hscode'])
+        $hscodeRole = Role::create(['name' => 'hs-code'])
             ->givePermissionTo([
-                'view-hscode',
-                'create-hscode',
+                'view-hs-code',
+                'create-hs-code',
             ]);
 
         $sortingRole = Role::create(['name' => 'sorting'])
-        ->givePermissionTo([
-            'view-sorting',
-            'create-sorting',
-        ]);
+            ->givePermissionTo([
+                'view-sorting',
+                'create-sorting',
+            ]);
 
         $inboundRole = Role::create(['name' => 'inbound'])
             ->givePermissionTo([
@@ -126,81 +140,111 @@ class RolesAndPermissionsSeeder extends Seeder
                 'create-tables',
             ]);
 
-        $employeeAffairsRole = Role::create(['name' => 'employeeaffairs'])
+        $returnedItemsRole = Role::create(['name' => 'returned-items'])
             ->givePermissionTo([
-                'view-employeeaffairs',
-                'create-employeeaffairs',
+                'view-returned-items',
+                'create-returned-items',
+            ]);
+
+        $employeeAffairsRole = Role::create(['name' => 'employee-affairs'])
+            ->givePermissionTo([
+                'view-employee-affairs',
+                'create-employee-affairs',
+            ]);
+
+        $managementStatistics = Role::create(['name' => 'management-statistics'])
+            ->givePermissionTo([
+                'view-management-statistics',
+                'create-management-statistics',
             ]);
 
         // Create manager roles with edit/approve permissions
-        $hscodeManager = Role::create(['name' => 'hscodemanager'])
+        $hscodeManager = Role::create(['name' => 'hs-code-manager'])
             ->givePermissionTo([
-                'view-hscode',
-                'edit-hscode',
-                'approve-hscode',
+                'view-hs-code',
+                'edit-hs-code',
+                'approve-hs-code',
             ]);
 
-        $hscodeManager = Role::create(['name' => 'sortingmanager'])
-        ->givePermissionTo([
-            'view-sorting',
-            'edit-sorting',
-            'approve-sorting',
-        ]);
+        $hscodeManager = Role::create(['name' => 'sorting-manager'])
+            ->givePermissionTo([
+                'view-sorting',
+                'edit-sorting',
+                'approve-sorting',
+            ]);
 
-        $inboundManager = Role::create(['name' => 'inboundmanager'])
+        $inboundManager = Role::create(['name' => 'inbound-manager'])
             ->givePermissionTo([
                 'view-inbound',
                 'edit-inbound',
                 'approve-inbound',
             ]);
 
-        $storeManager = Role::create(['name' => 'storemanager'])
+        $storeManager = Role::create(['name' => 'store-manager'])
             ->givePermissionTo([
                 'view-store',
                 'edit-store',
                 'approve-store',
             ]);
 
-        $vnsManager = Role::create(['name' => 'vnsmanager'])
+        $vnsManager = Role::create(['name' => 'vns-manager'])
             ->givePermissionTo([
                 'view-vns',
                 'edit-vns',
                 'approve-vns',
             ]);
 
-        $tablesManager = Role::create(['name' => 'tablesmanager'])
+        $tablesManager = Role::create(['name' => 'tables-manager'])
             ->givePermissionTo([
                 'view-tables',
                 'edit-tables',
                 'approve-tables',
             ]);
 
-        $employeeAffairsManager = Role::create(['name' => 'employeeaffairsmanager'])
+        $returnedItemsManagerRole = Role::create(['name' => 'returned-items-manager'])
             ->givePermissionTo([
-                'view-employeeaffairs',
-                'edit-employeeaffairs',
-                'approve-employeeaffairs',
+                'view-returned-items',
+                'edit-returned-items',
+                'approve-returned-items',
             ]);
 
+        $employeeAffairsManager = Role::create(['name' => 'employee-affairs-manager'])
+            ->givePermissionTo([
+                'view-employee-affairs',
+                'edit-employee-affairs',
+                'approve-employee-affairs',
+            ]);
+
+        $managementStatisticsManager = Role::create(['name' => 'management-statistics-manager'])
+        ->givePermissionTo([
+            'view-management-statistics',
+            'edit-management-statistics',
+            'approve-management-statistics',
+        ]);
+
         // Create test users for each role
-        $this->createUserWithRole('superadmin@airmail.com', 'superadmin');
+        $this->createUserWithRole('superadmin@airmail.com', 'super-admin');
         $this->createUserWithRole('supervisor@airmail.com', 'supervisor');
         
-        $this->createUserWithRole('hscodemanager@airmail.com', 'hscodemanager');
-        $this->createUserWithRole('sortingmanager@airmail.com', 'sortingmanager');
-        $this->createUserWithRole('inboundmanager@airmail.com', 'inboundmanager');
-        $this->createUserWithRole('storemanager@airmail.com', 'storemanager');
-        $this->createUserWithRole('vnsmanager@airmail.com', 'vnsmanager');
-        $this->createUserWithRole('tablesmanager@airmail.com', 'tablesmanager');
-        $this->createUserWithRole('employeeaffairsmanager@airmail.com', 'employeeaffairsmanager');
+        $this->createUserWithRole('hscodemanager@airmail.com', 'hs-code-manager');
+        $this->createUserWithRole('sortingmanager@airmail.com', 'sorting-manager');
+        $this->createUserWithRole('inboundmanager@airmail.com', 'inbound-manager');
+        $this->createUserWithRole('storemanager@airmail.com', 'store-manager');
+        $this->createUserWithRole('vnsmanager@airmail.com', 'vns-manager');
+        $this->createUserWithRole('tablesmanager@airmail.com', 'tables-manager');
+        $this->createUserWithRole('returneditemsmanager@airmail.com', 'returned-items-manager');
+        $this->createUserWithRole('employeeaffairsmanager@airmail.com', 'employee-affairs-manager');
+        $this->createUserWithRole('managementstatisticsmanager@airmail.com', 'management-statistics-manager');
         
-        $this->createUserWithRole('hscode@airmail.com', 'hscode');
+        $this->createUserWithRole('hscode@airmail.com', 'hs-code');
         $this->createUserWithRole('sorting@airmail.com', 'sorting');
         $this->createUserWithRole('inbound@airmail.com', 'inbound');
         $this->createUserWithRole('store@airmail.com', 'store');
         $this->createUserWithRole('vns@airmail.com', 'vns');
         $this->createUserWithRole('tables@airmail.com', 'tables');
-        $this->createUserWithRole('employeeaffairs@airmail.com', 'employeeaffairs');
+        $this->createUserWithRole('returneditems@airmail.com', 'returned-items');
+        $this->createUserWithRole('employeeaffairs@airmail.com', 'employee-affairs');
+        $this->createUserWithRole('managementstatistics@airmail.com', 'management-statistics');
     }
 
     protected function createUserWithRole($email, $roleName)

@@ -23,13 +23,14 @@
     <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
         @php
             $modules = [
-                'hscode' => 'HS Code',
+                'returned-items' => 'Returned Items',
+                'hs-code' => 'HS Code',
                 'sorting' => 'Sorting',
                 'inbound' => 'Inbound',
                 'store' => 'Store',
                 'vns' => 'VNS',
                 'tables' => 'Tables',
-                'employeeaffairs' => 'Employee Affairs',
+                'employee-affairs' => 'Employee Affairs',
                 'users' => 'Users',
             ];
         @endphp

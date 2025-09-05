@@ -30,14 +30,14 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middl
 Route::get('/home', [DashboardController::class, 'index'])->name('home')->middleware('auth:sanctum');
 
 // HS Code Module
-Route::prefix('hscode')->middleware('auth:sanctum')->group(function () {
-    Route::get('/', [HscodeController::class, 'index'])->name('hscode.index')->middleware('permission:view-hscode');
-    Route::get('/create', [HscodeController::class, 'create'])->name('hscode.create')->middleware('permission:create-hscode');
-    Route::post('/', [HscodeController::class, 'store'])->name('hscode.store')->middleware('permission:create-hscode');
-    Route::get('/{id}/edit', [HscodeController::class, 'edit'])->name('hscode.edit')->middleware('permission:edit-hscode');
-    Route::put('/{id}', [HscodeController::class, 'update'])->name('hscode.update')->middleware('permission:edit-hscode');
-    Route::delete('/{id}', [HscodeController::class, 'destroy'])->name('hscode.destroy')->middleware('permission:delete-hscode');
-    Route::post('/{id}/approve', [HscodeController::class, 'approve'])->name('hscode.approve')->middleware('permission:approve-hscode');
+Route::prefix('hs-code')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [HscodeController::class, 'index'])->name('hs-code.index')->middleware('permission:view-hs-code');
+    Route::get('/create', [HscodeController::class, 'create'])->name('hs-code.create')->middleware('permission:create-hs-code');
+    Route::post('/', [HscodeController::class, 'store'])->name('hs-code.store')->middleware('permission:create-hs-code');
+    Route::get('/{id}/edit', [HscodeController::class, 'edit'])->name('hs-code.edit')->middleware('permission:edit-hs-code');
+    Route::put('/{id}', [HscodeController::class, 'update'])->name('hs-code.update')->middleware('permission:edit-hs-code');
+    Route::delete('/{id}', [HscodeController::class, 'destroy'])->name('hs-code.destroy')->middleware('permission:delete-hs-code');
+    Route::post('/{id}/approve', [HscodeController::class, 'approve'])->name('hs-code.approve')->middleware('permission:approve-hs-code');
 });
 
 // Sorting Module
@@ -96,15 +96,77 @@ Route::prefix('tables')->middleware('auth:sanctum')->group(function () {
 });
 
 // Employee Affairs Module
-Route::prefix('employeeaffairs')->middleware('auth:sanctum')->group(function () {
-    Route::get('/', [EmployeeAffairsController::class, 'index'])->name('employeeaffairs.index')->middleware('permission:view-employeeaffairs');
-    Route::get('/create', [EmployeeAffairsController::class, 'create'])->name('employeeaffairs.create')->middleware('permission:create-employeeaffairs');
-    Route::post('/', [EmployeeAffairsController::class, 'store'])->name('employeeaffairs.store')->middleware('permission:create-employeeaffairs');
-    Route::get('/{id}/edit', [EmployeeAffairsController::class, 'edit'])->name('employeeaffairs.edit')->middleware('permission:edit-employeeaffairs');
-    Route::put('/{id}', [EmployeeAffairsController::class, 'update'])->name('employeeaffairs.update')->middleware('permission:edit-employeeaffairs');
-    Route::delete('/{id}', [EmployeeAffairsController::class, 'destroy'])->name('employeeaffairs.destroy')->middleware('permission:delete-employeeaffairs');
-    Route::post('/{id}/approve', [EmployeeAffairsController::class, 'approve'])->name('employeeaffairs.approve')->middleware('permission:approve-employeeaffairs');
+Route::prefix('employee-affairs')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [EmployeeAffairsController::class, 'index'])->name('employee-affairs.index')->middleware('permission:view-employee-affairs');
+    Route::get('/create', [EmployeeAffairsController::class, 'create'])->name('employee-affairs.create')->middleware('permission:create-employee-affairs');
+    Route::post('/', [EmployeeAffairsController::class, 'store'])->name('employee-affairs.store')->middleware('permission:create-employee-affairs');
+    Route::get('/{id}/edit', [EmployeeAffairsController::class, 'edit'])->name('employee-affairs.edit')->middleware('permission:edit-employee-affairs');
+    Route::put('/{id}', [EmployeeAffairsController::class, 'update'])->name('employee-affairs.update')->middleware('permission:edit-employee-affairs');
+    Route::delete('/{id}', [EmployeeAffairsController::class, 'destroy'])->name('employee-affairs.destroy')->middleware('permission:delete-employee-affairs');
+    Route::post('/{id}/approve', [EmployeeAffairsController::class, 'approve'])->name('employee-affairs.approve')->middleware('permission:approve-employee-affairs');
 });
+// Returned Items Module
+Route::prefix('returned-items')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [ReturnedItemsController::class, 'index'])
+        ->name('returned-items.index')
+        ->middleware('permission:view-returned-items');
+    
+        Route::get('/create', [ReturnedItemsController::class, 'create'])
+        ->name('returned-items.create')
+        ->middleware('permission:create-returned-items');
+    
+    Route::post('/', [ReturnedItemsController::class, 'store'])
+        ->name('returned-items.store')
+        ->middleware('permission:create-returned-items');
+    
+    Route::get('/{id}/edit', [ReturnedItemsController::class, 'edit'])
+        ->name('returned-items.edit')
+        ->middleware('permission:edit-returned-items');
+    
+    Route::put('/{id}', [ReturnedItemsController::class, 'update'])
+        ->name('returned-items.update')
+        ->middleware('permission:edit-returned-items');
+    
+    Route::delete('/{id}', [ReturnedItemsController::class, 'destroy'])
+        ->name('returned-items.destroy')
+        ->middleware('permission:delete-returned-items');
+    
+    Route::post('/{id}/approve', [ReturnedItemsController::class, 'approve'])
+        ->name('returned-items.approve')
+        ->middleware('permission:approve-returned-items');
+});
+
+// Management Statistics Module
+Route::prefix('management-statistics')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [ManagementStatisticsController::class, 'index'])
+        ->name('management-statistics.index')
+        ->middleware('permission:view-management-statistics');
+
+    Route::get('/create', [ManagementStatisticsController::class, 'create'])
+        ->name('management-statistics.create')
+        ->middleware('permission:create-management-statistics');
+
+    Route::post('/', [ManagementStatisticsController::class, 'store'])
+        ->name('management-statistics.store')
+        ->middleware('permission:create-management-statistics');
+
+    Route::get('/{id}/edit', [ManagementStatisticsController::class, 'edit'])
+        ->name('management-statistics.edit')
+        ->middleware('permission:edit-management-statistics');
+
+    Route::put('/{id}', [ManagementStatisticsController::class, 'update'])
+        ->name('management-statistics.update')
+        ->middleware('permission:edit-management-statistics');
+
+    Route::delete('/{id}', [ManagementStatisticsController::class, 'destroy'])
+        ->name('management-statistics.destroy')
+        ->middleware('permission:delete-management-statistics');
+
+    Route::post('/{id}/approve', [ManagementStatisticsController::class, 'approve'])
+        ->name('management-statistics.approve')
+        ->middleware('permission:approve-management-statistics');
+});
+
 
 // Users Module 
     Route::prefix('users')->middleware(['auth:sanctum'])->group(function () {
