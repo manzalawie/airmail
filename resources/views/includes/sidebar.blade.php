@@ -11,30 +11,30 @@
         
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link text-white active" href="{{ route('dashboard') }}">
-                    <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                <a class="nav-link text-white active {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}" href="{{ route('dashboard') }}">
+                    <i class="bi bi-speedometer2 me-2"></i> {{ __('messages.dashboard') }}
                 </a>
             </li>
             
             @php
                 $modules = [
-                    'returned-items' => 'Returned Items',
-                    'hs-code' => 'HS Code',
-                    'sorting' => 'Sorting',
-                    'inbound' => 'Inbound',
-                    'store' => 'Store',
-                    'vns' => 'VNS',
-                    'tables' => 'Tables',
-                    'employee-affairs' => 'Employee Affairs',
-                    'users' => 'Users',
+                    'returned-items' => __('messages.returned_items'),
+                    'hs-code' => __('messages.hs_code'),
+                    'sorting' => __('messages.sorting'),
+                    'inbound' => __('messages.inbound'),
+                    'store' => __('messages.store'),
+                    'vns' => __('messages.vns'),
+                    'tables' => __('messages.tables'),
+                    'employee-affairs' => __('messages.employee_affairs'),
+                    'users' => __('messages.users'),
                 ];
             @endphp
             
             @foreach($modules as $module => $displayName)
                 @can('view-'.$module)
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ route($module.'.index') }}">
-                            <i class="bi bi-{{ $module === 'hscode' ? 'file-earmark-text' : ($module === 'employeeaffairs' ? 'people' : 'box') }} me-2"></i>
+                        <a class="nav-link text-white {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}" href="{{ route($module.'.index') }}">
+                            <i class="bi bi-{{ $module === 'hs-code' ? 'file-earmark-text' : ($module === 'employee-affairs' ? 'people' : 'box') }} me-2"></i>
                             {{ $displayName }}
                         </a>
                     </li>

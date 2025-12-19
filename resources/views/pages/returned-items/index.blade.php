@@ -1,74 +1,74 @@
 @extends('layouts.app')
 
-@section('title', 'Returned Items')
+@section('title', __('messages.returned_items_title'))
 
 @section('content')
 <div class="container-fluid">
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Returned Items</h1>
+        <h1 class="h3 mb-0 text-gray-800">{{ __('messages.returned_items_title') }}</h1>
 
         @can('create-returned-items')
         <a href="{{ route('returned-items.create') }}"
            class="btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-plus"></i> Add Record
+            <i class="fas fa-plus"></i> {{ __('messages.add_record') }}
         </a>
         @endcan
     </div>
 
     <div class="card shadow mb-4">
         <div class="card-header bg-primary text-white d-flex justify-content-between">
-            <h6 class="m-0 font-weight-bold">Daily Records</h6>
+            <h6 class="m-0 font-weight-bold">{{ __('messages.daily_records') }}</h6>
             <div>
                 <button class="btn btn-sm btn-light" data-toggle="modal" data-target="#filterModal">
-                    <i class="fas fa-filter"></i> Filter
+                    <i class="fas fa-filter"></i> {{ __('messages.filter') }}
                 </button>
                 @if(request()->hasAny(['date_from', 'date_to', 'created_by']))
                 <a href="{{ route('returned-items.index') }}" class="btn btn-sm btn-warning ml-2">
-                    <i class="fas fa-times"></i> Clear Filters
+                    <i class="fas fa-times"></i> {{ __('messages.clear_filters') }}
                 </a>
                 @endif
             </div>
         </div>
 
-        <div class="card-body table-responsive">
+        <div class="card-body table-responsive text-center">
             <table class="table table-bordered table-hover">
                 <thead class="thead-light">
                 <tr>
                     <th rowspan="2">#</th>
-                    <th rowspan="2">Date</th>
-                    <th rowspan="2">Warehouse</th>
-                    <th colspan="2" class="text-center">Inbound</th>
-                    <th colspan="2" class="text-center">Ordinary Mail</th>
+                    <th rowspan="2">{{ __('messages.date') }}</th>
+                    <th rowspan="2">{{ __('messages.warehouse') }}</th>
+                    <th colspan="2" class="text-center">{{ __('messages.inbound') }}</th>
+                    <th colspan="2" class="text-center">{{ __('messages.ordinary_mail') }}</th>
                     <th colspan="3" class="text-center bg-info text-white">UV</th>
                     <th colspan="3" class="text-center bg-success text-white">UA</th>
                     <th colspan="3" class="text-center bg-warning text-white">UL</th>
-                    <th rowspan="2">Created By</th>
-                    <th rowspan="2">Actions</th>
+                    <th rowspan="2">{{ __('messages.created_by') }}</th>
+                    <th rowspan="2">{{ __('messages.actions') }}</th>
                 </tr>
                 <tr>
                     <!-- Inbound Sub-headers -->
-                    <th>Transit</th>
-                    <th>Returned</th>
+                    <th>{{ __('messages.transit') }}</th>
+                    <th>{{ __('messages.returned') }}</th>
                     
                     <!-- Ordinary Mail Sub-headers -->
-                    <th>Transit</th>
-                    <th>Returned</th>
+                    <th>{{ __('messages.transit') }}</th>
+                    <th>{{ __('messages.returned') }}</th>
                     
                     <!-- UV Sub-headers -->
-                    <th class="bg-info text-white">Dispatches</th>
-                    <th class="bg-info text-white">Items</th>
-                    <th class="bg-info text-white">Weight</th>
+                    <th class="bg-info text-white">{{ __('messages.dispatches') }}</th>
+                    <th class="bg-info text-white">{{ __('messages.items') }}</th>
+                    <th class="bg-info text-white">{{ __('messages.weight') }}</th>
                     
                     <!-- UA Sub-headers -->
-                    <th class="bg-success text-white">Dispatches</th>
-                    <th class="bg-success text-white">Items</th>
-                    <th class="bg-success text-white">Weight</th>
+                    <th class="bg-success text-white">{{ __('messages.dispatches') }}</th>
+                    <th class="bg-success text-white">{{ __('messages.items') }}</th>
+                    <th class="bg-success text-white">{{ __('messages.weight') }}</th>
                     
                     <!-- UL Sub-headers -->
-                    <th class="bg-warning text-white">Dispatches</th>
-                    <th class="bg-warning text-white">Items</th>
-                    <th class="bg-warning text-white">Weight</th>
+                    <th class="bg-warning text-white">{{ __('messages.dispatches') }}</th>
+                    <th class="bg-warning text-white">{{ __('messages.items') }}</th>
+                    <th class="bg-warning text-white">{{ __('messages.weight') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -144,10 +144,10 @@
                         
                         <td>{{ $item->creator->name ?? 'N/A' }}</td>
                         <td>
-                            <div class="btn-group btn-group-sm">
+                            <div class="btn-group btn-group-sm text-center" role="group">
                                 @can('edit-returned-items')
                                 <a href="{{ route('returned-items.edit', $item->id) }}"
-                                   class="btn btn-warning mr-2">
+                                   class="btn btn-warning mr-1">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 @endcan
@@ -156,8 +156,8 @@
                                 <form method="POST"
                                       action="{{ route('returned-items.destroy', $item->id) }}">
                                     @csrf @method('DELETE')
-                                    <button class="btn btn-danger"
-                                            onclick="return confirm('Delete?')">
+                                    <button class="btn btn-danger mr-1"
+                                            onclick="return confirm('{{ __('messages.delete_confirmation') }}')">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
@@ -167,14 +167,14 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="19" class="text-center">No records found</td>
+                        <td colspan="19" class="text-center">{{ __('messages.no_records_found') }}</td>
                     </tr>
                 @endforelse
                 
                 <!-- Totals Row -->
                 @if($items->count() > 0)
                 <tr class="font-weight-bold" style="background-color: #f8f9fa;">
-                    <td colspan="2" class="text-right">Totals:</td>
+                    <td colspan="2" class="text-right">{{ __('messages.totals') }}:</td>
                     <td>{{ number_format($totalWarehouse) }}</td>
                     
                     <!-- Inbound Totals -->
@@ -216,9 +216,9 @@
             <!-- Show record count -->
             @if($items->count() > 0)
             <div class="mt-2 text-muted">
-                Showing {{ $items->count() }} record(s)
+                {{ __('messages.showing_records', ['count' => $items->count()]) }}
                 @if($paginated && $items->total() > $items->count())
-                    of {{ $items->total() }}
+                    {{ __('messages.of_total', ['total' => $items->total()]) }}
                 @endif
             </div>
             @endif
@@ -227,33 +227,33 @@
 </div>
 
 {{-- FILTER MODAL --}}
-<div class="modal fade" id="filterModal">
+<div class="modal fade {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}" id="filterModal">
     <div class="modal-dialog">
         <form method="GET" class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5>Filter Returned Items</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h5>{{ __('messages.filter_returned_items') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" style="{{ app()->getLocale() === 'ar' ? 'margin-left:0' : 'margin-right:0' }};">&times;</button>
             </div>
 
             <div class="modal-body">
                 <div class="form-group">
-                    <label>Date From</label>
+                    <label>{{ __('messages.date_from') }}</label>
                     <input type="date" name="date_from"
                            value="{{ request('date_from') }}"
                            class="form-control">
                 </div>
 
                 <div class="form-group">
-                    <label>Date To</label>
+                    <label>{{ __('messages.date_to') }}</label>
                     <input type="date" name="date_to"
                            value="{{ request('date_to') }}"
                            class="form-control">
                 </div>
 
                 <div class="form-group">
-                    <label>Created By</label>
+                    <label>{{ __('messages.created_by') }}</label>
                     <select name="created_by" class="form-control">
-                        <option value="">All</option>
+                        <option value="">{{ __('messages.all') }}</option>
                         @foreach($creators as $creator)
                             <option value="{{ $creator->id }}"
                                 {{ request('created_by') == $creator->id ? 'selected' : '' }}>
@@ -270,19 +270,19 @@
                                value="1"
                                {{ request('disable_pagination') ? 'checked' : '' }}
                                class="form-check-input">
-                        <label for="disable_pagination" class="form-check-label">
-                            Show All Records (Disable Pagination)
+                        <label for="disable_pagination" class="form-check-label {{ app()->getLocale() === 'ar' ? 'mr-3' : '' }}">
+                            {{ __('messages.show_all_records') }}
                         </label>
                         <small class="form-text text-muted">
-                            Automatically checked when filtering by date
+                            {{ __('messages.automatically_checked') }}
                         </small>
                     </div>
                 </div>
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Apply</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('messages.close') }}</button>
+                <button type="submit" class="btn btn-primary">{{ __('messages.apply') }}</button>
             </div>
         </form>
     </div>
@@ -311,4 +311,30 @@
         checkDateFilters();
     });
 </script>
+@push('styles')
+<style>
+    /* Make entire row change color on hover */
+    .table-hover tbody tr:hover {
+        background-color: rgba(0, 123, 255, 0.1) !important;
+        cursor: pointer;
+    }
+    
+    /* Ensure all cells in the row have the same background on hover */
+    .table-hover tbody tr:hover td {
+        background-color: transparent !important;
+    }
+    
+    /* Specific handling for colored cells */
+    .table-hover tbody tr:hover td.bg-info {
+        background-color: rgba(23, 162, 184, 0.3) !important;
+    }
+    
+    .table-hover tbody tr:hover td.bg-success {
+        background-color: rgba(40, 167, 69, 0.3) !important;
+    }
+    
+    .table-hover tbody tr:hover td.bg-warning {
+        background-color: rgba(255, 193, 7, 0.3) !important;
+    }
+</style>
 @endpush

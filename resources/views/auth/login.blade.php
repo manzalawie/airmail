@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Login page')
+@section('title', __('messages.login'))
 
 @section('content-nonAuthorized')
 <div class="login-container">
     <div class="login-wrapper">
         <div class="login-card">
             <div class="login-header">
-                <h2>{{ __('Welcome Back') }}</h2>
-                <p>{{ __('Sign in to your account') }}</p>
+                <h2>{{ __('messages.welcome_back_title') }}</h2>
+                <p>{{ __('messages.sign_in_to_account') }}</p>
             </div>
 
             <div class="login-body">
@@ -16,10 +16,10 @@
                     @csrf
 
                     <div class="form-group">
-                        <label for="email">{{ __('Email Address') }}</label>
+                        <label for="email">{{ __('messages.email_address') }}</label>
                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" 
                                name="email" value="{{ old('email') }}" required autocomplete="email" autofocus
-                               placeholder="Enter your email">
+                               placeholder="{{ __('messages.enter_your_email') }}">
 
                         @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -29,10 +29,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password">{{ __('Password') }}</label>
+                        <label for="password">{{ __('messages.password') }}</label>
                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" 
                                name="password" required autocomplete="current-password"
-                               placeholder="Enter your password">
+                               placeholder="{{ __('messages.enter_your_password') }}">
 
                         @error('password')
                             <span class="invalid-feedback" role="alert">
@@ -45,20 +45,20 @@
                         <div class="remember-me">
                             <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                             <label class="form-check-label" for="remember">
-                                {{ __('Remember Me') }}
+                                {{ __('messages.remember_me') }}
                             </label>
                         </div>
                         
                         @if (Route::has('password.request'))
                             <a class="forgot-password" href="{{ route('password.request') }}">
-                                {{ __('Forgot Password?') }}
+                                {{ __('messages.forgot_password') }}
                             </a>
                         @endif
                     </div>
 
                     <div class="form-submit">
                         <button type="submit" class="btn btn-primary">
-                            {{ __('Login') }}
+                            {{ __('messages.login') }}
                         </button>
                     </div>
 

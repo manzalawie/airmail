@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Users')
+@section('title', __('messages.users'))
 
 @section('content')
 <div class="container-fluid">
     <!-- Page Header -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Users Management</h1>
+        <h1 class="h3 mb-0 text-gray-800">{{ __('messages.users_management') }}</h1>
         @can('create-users')
         <a href="{{ route('users.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-user-plus fa-sm text-white-50"></i> Add New User
+            <i class="fas fa-user-plus fa-sm text-white-50"></i> {{ __('messages.add_new_user') }}
         </a>
         @endcan
     </div>
@@ -17,12 +17,12 @@
     <!-- Users Table -->
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between bg-primary text-white">
-            <h6 class="m-0 font-weight-bold">System Users</h6>
+            <h6 class="m-0 font-weight-bold">{{ __('messages.system_users') }}</h6>
             <div class="btn-group" role="group" aria-label="User Actions">
                 <!-- Export Button Group -->
                 <div class="btn-group mr-2" role="group">
                     <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-file-export"></i> Export
+                        <i class="fas fa-file-export"></i> {{ __('messages.export') }}
                     </button>
                     <div class="dropdown-menu">
                         <form id="exportForm" method="GET" action="{{ route('users.index') }}">
@@ -31,10 +31,10 @@
                             <input type="hidden" name="role" value="{{ $filters['role'] ?? 'all' }}">
                             
                             <button type="submit" name="export" value="excel" class="dropdown-item">
-                                <i class="fas fa-file-excel mr-2"></i> Excel
+                                <i class="fas fa-file-excel mr-2"></i> {{ __('messages.excel') }}
                             </button>
                             <button type="submit" name="export" value="pdf" class="dropdown-item">
-                                <i class="fas fa-file-pdf mr-2"></i> PDF
+                                <i class="fas fa-file-pdf mr-2"></i> {{ __('messages.pdf') }}
                             </button>
                         </form>
                     </div>
@@ -42,12 +42,12 @@
                 
                 <!-- Filter Button -->
                 <button type="button" class="btn btn-info btn-sm mr-2" data-toggle="modal" data-target="#filterModal">
-                    <i class="fas fa-filter"></i> Filter
+                    <i class="fas fa-filter"></i> {{ __('messages.filter') }}
                 </button>
                 
                 <!-- Refresh Button -->
                 <button type="button" class="btn text-white font-weight-bold btn-sm" onclick="window.location.reload()">
-                    <i class="fas fa-sync-alt"></i> Refresh
+                    <i class="fas fa-sync-alt"></i> {{ __('messages.refresh') }}
                 </button>
             </div>
         </div>
@@ -57,7 +57,7 @@
                 <div class="col-md-6">
                     <form method="GET" action="{{ route('users.index') }}">
                         <div class="input-group">
-                            <input type="text" name="search" class="form-control bg-light border-0 small" placeholder="Search for users..." 
+                            <input type="text" name="search" class="form-control bg-light border-0 small" placeholder="{{ __('messages.search_for_users') }}" 
                                    value="{{ request('search') }}" aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">
@@ -70,30 +70,30 @@
                 <div class="col-md-6">
                     @if(request()->has('search') || request()->has('role') || request()->has('date_from'))
                     <a href="{{ route('users.index') }}" class="btn btn-sm btn-danger float-right ml-2">
-                        <i class="fas fa-times"></i> Clear Filters
+                        <i class="fas fa-times"></i> {{ __('messages.clear_filters') }}
                     </a>
                     @endif
                     @if(request()->has('role') || request()->has('date_from'))
                     <span class="float-right badge badge-info p-2">
-                        Active Filters: 
-                        {{ request('role') ? 'Role: ' . ucfirst(request('role')) . (request('date_from') ? ', ' : '') : '' }}
-                        {{ request('date_from') ? 'From: ' . request('date_from') : '' }}
-                        {{ request('date_to') ? ' to ' . request('date_to') : '' }}
+                        {{ __('messages.active_filters') }}: 
+                        {{ request('role') ? __('messages.role') . ': ' . ucfirst(request('role')) . (request('date_from') ? ', ' : '') : '' }}
+                        {{ request('date_from') ? __('messages.date_from') . ': ' . request('date_from') : '' }}
+                        {{ request('date_to') ? ' ' . __('messages.date_to') . ' ' . request('date_to') : '' }}
                     </span>
                     @endif
                 </div>
             </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive text-center">
                 <table class="table table-bordered table-hover" id="usersTable" width="100%" cellspacing="0">
                     <thead class="thead-light">
                         <tr>
                             <th>#</th>
-                            <th><i class="fas fa-user mr-1"></i> Name</th>
-                            <th><i class="fas fa-envelope mr-1"></i> Email</th>
-                            <th><i class="fas fa-shield-alt mr-1"></i> Role</th>
-                            <th><i class="fas fa-calendar-alt mr-1"></i> Created At</th>
-                            <th><i class="fas fa-cog mr-1"></i> Actions</th>
+                            <th><i class="fas fa-user mr-1"></i> {{ __('messages.name') }}</th>
+                            <th><i class="fas fa-envelope mr-1"></i> {{ __('messages.email') }}</th>
+                            <th><i class="fas fa-shield-alt mr-1"></i> {{ __('messages.role') }}</th>
+                            <th><i class="fas fa-calendar-alt mr-1"></i> {{ __('messages.created_at') }}</th>
+                            <th><i class="fas fa-cog mr-1"></i> {{ __('messages.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -108,7 +108,7 @@
                                     </div>
                                     {{ $user->name }}
                                     @if($user->trashed())
-                                    <span class="badge badge-danger ml-2">Deleted</span>
+                                    <span class="badge badge-danger ml-2">{{ __('messages.deleted') }}</span>
                                     @endif
                                 </div>
                             </td>
@@ -140,7 +140,7 @@
                                             <form action="{{ route('users.restore', $user->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('PATCH')
-                                                <button type="submit" class="btn btn-success mr-1" title="Restore" onclick="return confirm('Restore this user?')">
+                                                <button type="submit" class="btn btn-success mr-1" title="{{ __('messages.restore') }}" onclick="return confirm('{{ __('messages.restore_confirmation') }}')">
                                                     <i class="fas fa-trash-restore"></i>
                                                 </button>
                                             </form>
@@ -148,7 +148,7 @@
                                             <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-danger mr-1" title="Delete" onclick="return confirm('Are you sure you want to delete this user?')">
+                                                <button type="submit" class="btn btn-danger mr-1" title="{{ __('messages.delete') }}" onclick="return confirm('{{ __('messages.delete_user_confirmation') }}')">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </form>
@@ -159,7 +159,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="text-center">No users found</td>
+                            <td colspan="6" class="text-center">{{ __('messages.no_users_found') }}</td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -177,21 +177,21 @@
 </div>
 
 <!-- Filter Modal -->
-<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+<div class="modal fade {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="filterModalLabel">Filter Users</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="filterModalLabel">{{ __('messages.filter_users') }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="{{ app()->getLocale() === 'ar' ? 'margin-left:0' : 'margin-right:0' }};">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form method="GET" action="{{ route('users.index') }}">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="roleFilter">Role</label>
+                        <label for="roleFilter">{{ __('messages.role') }}</label>
                         <select class="form-control" id="roleFilter" name="role">
-                            <option value="">All Roles</option>
+                            <option value="">{{ __('messages.all_roles') }}</option>
                             @foreach($roles as $role)
                             <option value="{{ $role->name }}" {{ request('role') == $role->name ? 'selected' : '' }}>
                                 {{ ucfirst($role->name) }}
@@ -212,8 +212,8 @@
                     </div> --}}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('messages.close') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('messages.apply_filters') }}</button>
                 </div>
             </form>
         </div>

@@ -108,7 +108,7 @@ class ReturnedItemsController extends Controller
 
         return redirect()
             ->route('returned-items.index')
-            ->with('success', 'Returned item created successfully');
+            ->with('success', __('messages.returned_item_created'));
     }
 
     public function edit($id)
@@ -131,15 +131,15 @@ class ReturnedItemsController extends Controller
         $item->update($data);
 
         return redirect()
-            ->route('pages.returned-items.index')
-            ->with('success', 'Returned item updated successfully');
+            ->route('returned-items.index')
+            ->with('success', __('messages.returned_item_updated'));
     }
 
     public function destroy($id)
     {
         ReturnedItem::findOrFail($id)->delete();
 
-        return back()->with('success', 'Returned item deleted');
+        return back()->with('success', __('messages.returned_item_deleted'));
     }
 
     public function approve($id)
@@ -148,6 +148,6 @@ class ReturnedItemsController extends Controller
         $item->approved_at = now();
         $item->save();
 
-        return back()->with('success', 'Returned item approved');
+        return back()->with('success', __('messages.returned_item_approved'));
     }
 }

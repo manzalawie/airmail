@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,6 +22,27 @@
         
         body {
             /* padding-top: var(--topbar-height); */
+        }
+        
+        /* RTL Support for Arabic */
+        html[dir="rtl"] {
+            direction: rtl;
+        }
+        
+        html[dir="rtl"] .sidebar {
+            left: auto;
+            right: 0;
+        }
+        
+        html[dir="rtl"] .main-content {
+            margin-left: 0;
+            margin-right: var(--sidebar-width);
+        }
+        
+        @media (max-width: 992px) {
+            html[dir="rtl"] .main-content {
+                margin-right: 0;
+            }
         }
 
         .navbar{
@@ -116,7 +137,7 @@
 
     <footer class="main-content">
         <div class="container text-center">
-            <span class="text-muted">&copy; {{ date('Y') }} Manzalawie. All rights reserved.</span>
+            <span class="text-muted">&copy; {{ date('Y') }} Manzalawie. {{ __('messages.all_rights_reserved') }}.</span>
         </div>
     </footer>
     @else

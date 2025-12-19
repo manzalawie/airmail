@@ -16,6 +16,21 @@
             </ul>
 
             <ul class="navbar-nav ml-auto">
+                <!-- Language Switcher -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" 
+                       role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-language mr-1"></i> {{ __('messages.language') }}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="languageDropdown">
+                        <a class="dropdown-item" href="{{ route('language.switch', 'en') }}">
+                            <i class="fas fa-globe mr-1"></i> {{ __('messages.english') }}
+                        </a>
+                        <a class="dropdown-item" href="{{ route('language.switch', 'ar') }}">
+                            <i class="fas fa-globe mr-1"></i> {{ __('messages.arabic') }}
+                        </a>
+                    </div>
+                </li>
                 <!-- Right navbar items -->
                 @auth
                 <li class="nav-item dropdown">
@@ -25,20 +40,20 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="">
-                            <i class="fas fa-user mr-1"></i> Profile
+                            <i class="fas fa-user mr-1"></i> {{ __('messages.profile') }}
                         </a>
                         <div class="dropdown-divider"></div>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" class="dropdown-item">
-                                <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                                <i class="fas fa-sign-out-alt mr-1"></i> {{ __('messages.logout') }}
                             </button>
                         </form>
                     </div>
                 </li>
                 @else
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('login') }}">Login</a>
+                    <a class="nav-link" href="{{ route('login') }}">{{ __('messages.login') }}</a>
                 </li>
                 @endauth
             </ul>

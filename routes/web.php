@@ -12,7 +12,8 @@ use App\Http\Controllers\{
     DashboardController,
     UserController,
     ReturnedItemsController,
-    ManagementStatisticsController
+    ManagementStatisticsController,
+    LanguageController
 };
 
 /*
@@ -25,6 +26,9 @@ use App\Http\Controllers\{
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Language switcher
+Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
+
 // Auth routs
 Auth::routes(['register' => false]);
 

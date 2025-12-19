@@ -117,10 +117,10 @@ class UserController extends Controller
         ];
 
         $messages = [
-            'national_id.size' => 'The national ID must be exactly 14 digits.',
-            'national_id.regex' => 'The national ID must contain only numbers.',
-            'phone.regex' => 'The mobile phone must contain only numbers.',
-            'password.confirmed' => 'Password confirmation does not match.',
+            'national_id.size' => __('messages.national_id_size'),
+            'national_id.regex' => __('messages.national_id_regex'),
+            'phone.regex' => __('messages.phone_regex'),
+            'password.confirmed' => __('messages.password_confirmed'),
         ];
 
         $validatedData = $request->validate($rules, $messages);
@@ -140,7 +140,7 @@ class UserController extends Controller
         
         $this->syncRoleAndPermissions($user, $newRole, $selectedPermissions);
         
-        return redirect()->back()->with('success', 'User updated successfully');
+        return redirect()->back()->with('success', __('messages.user_updated'));
     }
 
     public function destroy($id)
@@ -152,7 +152,7 @@ class UserController extends Controller
         
         $userToDelete->delete();
         
-        return redirect()->back()->with('success', 'User has been deleted successfully');
+        return redirect()->back()->with('success', __('messages.user_deleted'));
     }
     
     public function restore($id)
@@ -162,7 +162,7 @@ class UserController extends Controller
         $user->restore();
         
         return redirect()->route('users.index')
-            ->with('success', 'User has been restored successfully');
+            ->with('success', __('messages.user_restored'));
     }
 
     protected function syncRoleAndPermissions(User $user, string $newRole, array $selectedPermissions)
