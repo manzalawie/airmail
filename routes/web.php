@@ -10,7 +10,9 @@ use App\Http\Controllers\{
     TablesController,
     EmployeeAffairsController,
     DashboardController,
-    UserController
+    UserController,
+    ReturnedItemsController,
+    ManagementStatisticsController
 };
 
 /*

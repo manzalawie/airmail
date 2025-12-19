@@ -18,13 +18,14 @@
             
             @php
                 $modules = [
-                    'hscode' => 'HS Code',
+                    'returned-items' => 'Returned Items',
+                    'hs-code' => 'HS Code',
                     'sorting' => 'Sorting',
                     'inbound' => 'Inbound',
                     'store' => 'Store',
                     'vns' => 'VNS',
                     'tables' => 'Tables',
-                    'employeeaffairs' => 'Employee Affairs',
+                    'employee-affairs' => 'Employee Affairs',
                     'users' => 'Users',
                 ];
             @endphp
